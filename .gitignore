@@ -7,3 +7,7 @@ build
 # Env
 .env
 .env.test
+
+# Tests
+coverage
+
