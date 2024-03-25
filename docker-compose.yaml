@@ -1,0 +1,12 @@
+version: "2"
+
+services:
+  postgresql:
+    image: bitnami/postgresql:latest
+    container_name: postgresql
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRESQL_DATABASE=apisolid
+      - POSTGRESQL_USERNAME=docker
+      - POSTGRESQL_PASSWORD=docker
