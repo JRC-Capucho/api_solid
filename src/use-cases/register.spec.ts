@@ -1,15 +1,19 @@
-import { describe, expect, it } from "vitest";
+import { InMemoryUsersRepository } from "@/repositories/in-memory/in-memory-users-repository";
 import { RegisterUseCase } from "./register";
+import { beforeEach, describe, expect, it } from "vitest";
 import { compare } from "bcryptjs";
-import { InMemoryUsersRepository } from "@/repositories/in-memory/in-memory-repository";
-import { UserAlreadyExistsError } from "./errors/user-already-exists";
+import { UserAlreadyExistsError } from "./errors/user-already-exists-error";
 
+let usersRepository: InMemoryUsersRepository;
+let sut: RegisterUseCase;
 describe("Register Use Case", () => {
-  it("should hash user password upon registration", async () => {
-    const usersRepository = new InMemoryUsersRepository();
-    const registerUseCase = new RegisterUseCase(usersRepository);
+  beforeEach(() => {
+    usersRepository = new InMemoryUsersRepository();
+    sut = new RegisterUseCase(usersRepository);
+  });
 
-    const { user } = await registerUseCase.execute({
+  it("should hash user password upon registration", async () => {
+    const { user } = await sut.execute({
       name: "joao",
       email: "joao@gmail.com",
       password: "123",
@@ -20,34 +24,28 @@ describe("Register Use Case", () => {
   });
 
   it("should not be able to register with same email twice", async () => {
-    const usersRepository = new InMemoryUsersRepository();
-    const registerUseCase = new RegisterUseCase(usersRepository);
-
-    await registerUseCase.execute({
+    await sut.execute({
       name: "joao",
       email: "joao@gmail.com",
       password: "123",
     });
 
     await expect(() =>
-    registerUseCase.execute({
-      name: "joao",
-      email: "joao@gmail.com",
-      password: "123",
-    })
-    ).rejects.toBeInstanceOf(UserAlreadyExistsError)
+      sut.execute({
+        name: "joao",
+        email: "joao@gmail.com",
+        password: "123",
+      }),
+    ).rejects.toBeInstanceOf(UserAlreadyExistsError);
   });
 
-  it("should be able to register",async ()=>{
-    const usersRepository = new InMemoryUsersRepository();
-    const registerUseCase = new RegisterUseCase(usersRepository);
-
-    const {user} = await registerUseCase.execute({
+  it("should be able to register", async () => {
+    const { user } = await sut.execute({
       name: "joao",
       email: "joao@gmail.com",
       password: "123",
     });
 
-    expect(user.id).toEqual(expect.any(String))
-  })
+    expect(user.id).toEqual(expect.any(String));
+  });
 });

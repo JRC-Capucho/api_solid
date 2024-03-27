@@ -1,14 +1,18 @@
-import { describe, expect, it } from "vitest";
-import { hash } from "bcryptjs";
-import { InMemoryUsersRepository } from "@/repositories/in-memory/in-memory-repository";
+import { InMemoryUsersRepository } from "@/repositories/in-memory/in-memory-users-repository";
 import { AuthenticateUseCase } from "./authenticate";
+import { beforeEach, describe, expect, it } from "vitest";
+import { hash } from "bcryptjs";
 import { InvalidCredentialsError } from "./errors/invalid-credentials-error";
 
+let usersRespository: InMemoryUsersRepository;
+let sut: AuthenticateUseCase;
 describe("Authenticate Use Case", () => {
-  it("should be able to athenticate", async () => {
-    const usersRespository = new InMemoryUsersRepository();
-    const sut = new AuthenticateUseCase(usersRespository);
+  beforeEach(() => {
+    usersRespository = new InMemoryUsersRepository();
+    sut = new AuthenticateUseCase(usersRespository);
+  });
 
+  it("should be able to athenticate", async () => {
     await usersRespository.create({
       name: "joao",
       email: "joao@gmail.com",
@@ -24,9 +28,6 @@ describe("Authenticate Use Case", () => {
   });
 
   it("should not be able to authenticate with no account", async () => {
-    const usersRespository = new InMemoryUsersRepository();
-    const sut = new AuthenticateUseCase(usersRespository);
-
     await expect(() =>
       sut.execute({
         email: "joao@gmail.com",
@@ -36,9 +37,6 @@ describe("Authenticate Use Case", () => {
   });
 
   it("should not be able to authenticate with wrong email", async () => {
-    const usersRespository = new InMemoryUsersRepository();
-    const sut = new AuthenticateUseCase(usersRespository);
-
     await usersRespository.create({
       name: "joao",
       email: "joao@gmail.com",
@@ -54,9 +52,6 @@ describe("Authenticate Use Case", () => {
   });
 
   it("should not be able to authenticate with wrong email", async () => {
-    const usersRespository = new InMemoryUsersRepository();
-    const sut = new AuthenticateUseCase(usersRespository);
-
     await usersRespository.create({
       name: "joao",
       email: "joao@gmail.com",
