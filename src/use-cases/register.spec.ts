@@ -6,6 +6,7 @@ import { UserAlreadyExistsError } from "./errors/user-already-exists-error";
 
 let usersRepository: InMemoryUsersRepository;
 let sut: RegisterUseCase;
+
 describe("Register Use Case", () => {
   beforeEach(() => {
     usersRepository = new InMemoryUsersRepository();

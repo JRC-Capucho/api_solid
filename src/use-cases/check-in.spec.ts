@@ -8,18 +8,20 @@ let checkinsRepository: InMemoryCheckInsRepository;
 let gymsRepository: InMemoryGymsRepository;
 let sut: CheckingsUseCase;
 describe("Authenticate Use Case", () => {
-  gymsRepository.items.push({
-    id: "gym-01",
-    phone: "",
-    title: "JavaScript Gym",
-    latitude: new Decimal(0),
-    longitude: new Decimal(0),
-    description: "",
-  });
-
   beforeEach(() => {
     checkinsRepository = new InMemoryCheckInsRepository();
+    gymsRepository = new InMemoryGymsRepository();
     sut = new CheckingsUseCase(checkinsRepository, gymsRepository);
+
+    gymsRepository.items.push({
+      id: "gym-01",
+      phone: "",
+      title: "JavaScript Gym",
+      latitude: new Decimal(-22.6732406),
+      longitude: new Decimal(-45.027986),
+      description: "",
+    });
+
     vi.useFakeTimers();
   });
 
@@ -28,15 +30,6 @@ describe("Authenticate Use Case", () => {
   });
 
   it("should be able to check in", async () => {
-    gymsRepository.items.push({
-      id: "gym-01",
-      phone: "",
-      title: "JavaScript Gym",
-      latitude: new Decimal(0),
-      longitude: new Decimal(0),
-      description: "",
-    });
-
     const { checkIn } = await sut.execute({
       userId: "user-01",
       gymId: "gym-01",
@@ -87,5 +80,25 @@ describe("Authenticate Use Case", () => {
     });
 
     expect(checkIn.id).toEqual(expect.any(String));
+  });
+
+  it("should not be able to check in on distance gym", async () => {
+    gymsRepository.items.push({
+      id: "gym-02",
+      phone: "",
+      title: "JavaScript Gym",
+      latitude: new Decimal(-22.651816),
+      longitude: new Decimal(-44.9894909),
+      description: "",
+    });
+
+    await expect(() =>
+      sut.execute({
+        userId: "user-01",
+        gymId: "gym-02",
+        userLatitude: -22.6732406,
+        userLongitude: -45.027986,
+      }),
+    ).rejects.toBeInstanceOf(Error);
   });
 });
