@@ -1,10 +1,10 @@
 import { CheckIn } from "@prisma/client";
-import { ICheckinsRepository } from "@/repositories/check-ins-repository";
 import { IGymsRepository } from "@/repositories/gyms-repository";
 import { ResourceNotFoundError } from "./errors/resource-not-found-error";
 import { getDistanceBetweenCoordinates } from "@/utils/get-distance-between-coordenates";
 import { MaxNumberOfCheckInsError } from "./errors/max-numbers-of-check-ins-error";
 import { MaxDistanceError } from "./errors/max-distance-error";
+import { ICheckInsRepository } from "@/repositories/check-ins-repository";
 
 interface ICheckingsUseCaseRequest {
   userId: string;
@@ -17,9 +17,9 @@ interface ICheckingsUseCaseResponse {
   checkIn: CheckIn;
 }
 
-export class CheckingsUseCase {
+export class CheckInUseCase {
   constructor(
-    private checkInsRepository: ICheckinsRepository,
+    private checkInsRepository: ICheckInsRepository,
     private gymsRepository: IGymsRepository,
   ) {}
 

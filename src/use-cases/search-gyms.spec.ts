@@ -1,14 +1,14 @@
 import { beforeEach, describe, expect, it } from "vitest";
-import { SearchGymUseCase } from "./search-gyms";
+import { SearchGymsUseCase } from "./search-gyms";
 import { InMemoryGymsRepository } from "@/repositories/in-memory/in-memory-gyms-repository";
 
 let gymsRepository: InMemoryGymsRepository;
-let sut: SearchGymUseCase;
+let sut: SearchGymsUseCase;
 
 describe("Search Gym Use Case", () => {
   beforeEach(() => {
     gymsRepository = new InMemoryGymsRepository();
-    sut = new SearchGymUseCase(gymsRepository);
+    sut = new SearchGymsUseCase(gymsRepository);
   });
 
   it("should be able to search for gym", async () => {
@@ -56,8 +56,6 @@ describe("Search Gym Use Case", () => {
       query: "JavaScript",
       page: 2,
     });
-
-    console.log(gyms);
 
     expect(gyms).toHaveLength(2);
 

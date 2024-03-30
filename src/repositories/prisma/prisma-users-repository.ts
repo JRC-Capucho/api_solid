@@ -15,6 +15,10 @@ export class PrismaUsersRepository implements IUsersRepository {
       where: { email },
     });
 
+    if (!user) {
+      return null;
+    }
+
     return user;
   }
 

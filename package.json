@@ -7,10 +7,12 @@
     "dev": "tsx watch src/server.ts",
     "start": "node build/server.js",
     "build": "tsup src -d build",
-    "test": "vitest run",
-    "test:watch": "vitest",
+    "test": "vitest run --dir src/use-cases",
+    "test:watch": "vitest run --dir src/use-cases --watch",
     "test:coverage": "vitest run --coverage",
-    "test:ui": "vitest --ui"
+    "test:ui": "vitest --ui",
+    "test:e2e": "vitest run --dir src/http",
+    "pretest:e2e": "npm link ./prisma/vitest-environment-prisma && npm link vitest-environment-prisma"
   },
   "keywords": [],
   "author": "",
@@ -33,6 +35,7 @@
     "vitest": "1.4.0"
   },
   "dependencies": {
+    "@fastify/jwt": "8.0.0",
     "@prisma/client": "5.11.0",
     "bcryptjs": "2.4.3",
     "dayjs": "1.11.10",

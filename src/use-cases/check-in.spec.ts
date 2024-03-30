@@ -1,21 +1,20 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { CheckingsUseCase } from "./check-in";
 import { InMemoryGymsRepository } from "@/repositories/in-memory/in-memory-gyms-repository";
 import { Decimal } from "@prisma/client/runtime/library";
 import { MaxNumberOfCheckInsError } from "./errors/max-numbers-of-check-ins-error";
 import { MaxDistanceError } from "./errors/max-distance-error";
 import { ICheckInsRepository } from "@/repositories/check-ins-repository";
 import { InMemoryCheckInsRepository } from "@/repositories/in-memory/in-memory-check-ins-repository";
-import { IGymsRepository } from "@/repositories/gyms-repository";
+import { CheckInUseCase } from "./check-in";
 
 let checkinsRepository: ICheckInsRepository;
-let gymsRepository: IGymsRepository;
-let sut: CheckingsUseCase;
+let gymsRepository: InMemoryGymsRepository;
+let sut: CheckInUseCase;
 describe("Authenticate Use Case", () => {
   beforeEach(async () => {
     checkinsRepository = new InMemoryCheckInsRepository();
     gymsRepository = new InMemoryGymsRepository();
-    sut = new CheckingsUseCase(checkinsRepository, gymsRepository);
+    sut = new CheckInUseCase(checkinsRepository, gymsRepository);
 
     await gymsRepository.create({
       id: "gym-01",
