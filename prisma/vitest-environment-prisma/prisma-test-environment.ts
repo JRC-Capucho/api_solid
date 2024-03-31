@@ -35,6 +35,7 @@ export default <Environment>{
         await prisma.$executeRawUnsafe(
           `DROP SCHEMA IF EXISTS "${schema}" CASCADE`,
         );
+        await prisma.$disconnect();
       },
     };
   },
