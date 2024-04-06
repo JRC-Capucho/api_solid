@@ -12,7 +12,7 @@
     "test:coverage": "vitest run --coverage",
     "test:ui": "vitest --ui",
     "test:e2e": "vitest run --dir src/http",
-    "test:e2e:watch": "vitest --dir src/http",
+    "test:e2e:watch": "vitest --watch --dir src/http",
     "pretest:e2e": "npm link ./prisma/vitest-environment-prisma && npm link vitest-environment-prisma"
   },
   "keywords": [],
@@ -38,6 +38,7 @@
     "vitest": "1.4.0"
   },
   "dependencies": {
+    "@fastify/cookie": "9.3.1",
     "@fastify/jwt": "8.0.0",
     "@prisma/client": "5.11.0",
     "bcryptjs": "2.4.3",
