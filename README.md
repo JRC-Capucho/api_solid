@@ -27,6 +27,12 @@ To run:
 npm run 
 ```
 
+## Run in docker
+
+```bash
+docker compose -up --build -d
+```
+
 ## Requirements (RFs)
 
 - [x] User registration

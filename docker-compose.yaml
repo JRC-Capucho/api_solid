@@ -1,12 +1,36 @@
-version: "2"
+version: "3.9"
 
 services:
   postgresql:
     image: bitnami/postgresql:latest
     container_name: postgresql
+    volumes:
+      - db:/bitnami/postgresql
     ports:
-      - "5432:5432"
+      - 5432:5432
     environment:
-      - POSTGRESQL_DATABASE=${POSTGRESQL_DATABASE}
-      - POSTGRESQL_USERNAME=${POSTGRESQL_USERNAME}
-      - POSTGRESQL_PASSWORD=${POSTGRESQL_PASSWORD}
+      - POSTGRESQL_DATABASE=gym-pass
+      - POSTGRESQL_USERNAME=docker
+      - POSTGRESQL_PASSWORD=docker
+    networks:
+      - system
+
+  node:
+    build:
+      context: .
+    ports:
+      - 3000:3333
+    depends_on:
+      - postgresql
+    networks:
+      - system
+    environment:
+      - JWT_SECRET=secret
+
+networks:
+  system:
+    driver: bridge
+
+volumes:
+  db:
+    
